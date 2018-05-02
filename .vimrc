@@ -1,62 +1,7 @@
 " File              : /home/gharvhel/.vimrc
 " Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
-" Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
-" File              : /home/gharvhel/.vimrc
-" Author            : Gharvhel Carre <gc2767@columbia.edu>
-" Date              : 21.03.2018
-" Last Modified Date: 21.03.2018
+" Date              : 01.05.2018
+" Last Modified Date: 01.05.2018
 " Last Modified By  : Gharvhel Carre <gc2767@columbia.edu>
 
 " Use Vim settings, rather than Vi settings (much better!).
@@ -80,9 +25,11 @@ call plug#begin('~/.vim/plugged')
 
 " ----- Making Vim look good ------------------------------------------
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'WolfgangMehner/c-support'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline-themes'
+
+" ----- C and C++ IDE -------------------------------------------------
+Plug 'WolfgangMehner/c-support'
 
 " ----- Vim as a programmer's text editor -----------------------------
 Plug 'scrooloose/nerdtree'
@@ -207,6 +154,21 @@ if exists("+undofile")
   set undofile
 endif
 
+" ----- Virtualenv Support -----------------------------------------------
+" Add the virtualenv's site-packages to vim path
+if has('python')
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
+
 " ----- Convenience command ------------------------------------------------
 
 " Use :C to clear hlsearch
@@ -241,9 +203,9 @@ noremap <silent> _ g_
 " ----- Terminal-as-GUI settings -------------------------------------------
 
 " In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
+"if has('mouse')
+"  set mouse=a
+"endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -328,8 +290,8 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " ----- Plugin-Specific Settings -------------------------------------------
 " ----- rafi/awesome-vim-colorschemes --------------------------------------
-set background=dark
-colorscheme molokai
+"set background=dark
+"colorscheme molokai
 
 " ----- WolfgangMehner/c-support -------------------------------------------
 " To enable the tools for cmake or doxygen, add these lines to ~/.vimrc :
@@ -362,7 +324,7 @@ let g:airline_detect_paste=1
 let g:airline#extensions#tabline#enabled = 1
 
 " Use the solarized theme for the Airline status bar
-let g:airline_theme='molokai'
+"let g:airline_theme='molokai'
 
 " ----- jistr/vim-nerdtree-tabs -----
 " Open/close NERDTree Tabs with \t
@@ -464,15 +426,16 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 "hide .pyc files
-"let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 " ===== Simply Fold =====
+" see the docstrings for folded code
 let g:SimpylFold_docstring_preview=1
 
 " ===== vim-header =====
 let g:header_field_author = 'Gharvhel Carre'
 let g:header_field_author_email = 'gc2767@columbia.edu'
-let g:header_max_size = 20
+let g:header_max_size = 7
 map <F4> :AddHeader<CR>
 
 " ===== python-mode =====
